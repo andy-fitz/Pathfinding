@@ -1,15 +1,22 @@
 package astar;
 
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 
 public class Node {
 
+    // Grid position
     private int i;
     private int j;
+    // Centre of Node
     private double x;
     private double y;
+    // f(n) = g(n) + h(n)
     private double f;
     private double g;
+    //
+    private Color NodeColour = Color.WHITE;
 
     private ArrayList<Node> neighbours = new ArrayList<>();
 
@@ -53,8 +60,8 @@ public class Node {
         return f;
     }
 
-    public void setF(double f) {
-        this.f = f;
+    public void calculateF(Node goal) {
+        this.f =  g + Math.abs(this.x - goal.x) + Math.abs(this.y - goal.y);
     }
 
     public double getG() {
@@ -63,5 +70,17 @@ public class Node {
 
     public void setG(double g) {
         this.g = g;
+    }
+
+    public ArrayList<Node> getNeighbours() {
+        return neighbours;
+    }
+
+    public Color getNodeColour() {
+        return NodeColour;
+    }
+
+    public void setNodeColour(Color nodeColour) {
+        NodeColour = nodeColour;
     }
 }
