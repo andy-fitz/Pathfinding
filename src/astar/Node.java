@@ -15,7 +15,9 @@ public class Node {
     // f(n) = g(n) + h(n)
     private double f;
     private double g = Double.POSITIVE_INFINITY;
-    //
+
+    private Node cameFrom = null;
+
     private Color NodeColour = Color.WHITE;
 
     private ArrayList<Node> neighbours = new ArrayList<>();
@@ -89,5 +91,13 @@ public class Node {
 
     public int getJ() {
         return j;
+    }
+
+    public Node getCameFrom() {
+        return cameFrom;
+    }
+
+    public void setCameFrom(Node cameFrom) {
+        this.cameFrom = cameFrom;
     }
 }

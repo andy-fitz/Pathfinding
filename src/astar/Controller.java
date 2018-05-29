@@ -106,6 +106,7 @@ public class Controller {
 
         ArrayList<Node> closedSet = new ArrayList<>();
         ArrayList<Node> openSet = new ArrayList<>();
+        ArrayList<Node> currentPath = new ArrayList();
 
         openSet.add(start);
 
@@ -127,6 +128,17 @@ public class Controller {
 
             if(current.equals(goal)){
                 System.out.println("done");
+
+                currentPath.clear();
+                Node temp = current;
+                while(temp.getCameFrom() != null){
+                    currentPath.add(temp.getCameFrom());
+                    temp.setNodeColour(Color.BLUE);
+                    temp = temp.getCameFrom();
+                }
+                Platform.runLater(() -> {
+                    drawNodes();
+                });
                 return;
                 // return path
             }
@@ -147,11 +159,13 @@ public class Controller {
                     double temp_score = current.getG() + 1;
 
                     if (temp_score < neighbour.getG()){
+                        neighbour.setCameFrom(current);
                         neighbour.setG(temp_score);
                         neighbour.calculateF(goal);
                     }
                 }
             }
+
 
             try {
                 Thread.sleep(10);
