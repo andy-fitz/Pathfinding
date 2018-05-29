@@ -109,7 +109,7 @@ public class Controller {
 
         openSet.add(start);
 
-        start.setG(0);
+        start.setG(0.0);
         start.calculateF(goal);
 
         Node current;
@@ -123,8 +123,11 @@ public class Controller {
                 }
             }
             current = openSet.get(lowest);
+            System.out.println(current.getG());
+
             if(current.equals(goal)){
                 System.out.println("done");
+                return;
                 // return path
             }
 
@@ -142,6 +145,7 @@ public class Controller {
                     }
 
                     double temp_score = current.getG() + 1;
+
                     if (temp_score < neighbour.getG()){
                         neighbour.setG(temp_score);
                         neighbour.calculateF(goal);
@@ -157,9 +161,7 @@ public class Controller {
             Platform.runLater(() -> {
                 drawNodes();
             });
-
         }
-
         System.out.println("Failure");
     }
 

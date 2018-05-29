@@ -14,7 +14,7 @@ public class Node {
     private double y;
     // f(n) = g(n) + h(n)
     private double f;
-    private double g;
+    private double g = Double.POSITIVE_INFINITY;
     //
     private Color NodeColour = Color.WHITE;
 
@@ -33,7 +33,6 @@ public class Node {
     }
 
     public void addNeighbours(Node[][] grid){
-        System.out.println(i + " " + j);
         if(i < grid.length-1){
             neighbours.add(grid[i+1][j]); // Right
         }
@@ -61,7 +60,7 @@ public class Node {
     }
 
     public void calculateF(Node goal) {
-        this.f =  g + Math.abs(this.x - goal.x) + Math.abs(this.y - goal.y);
+        this.f =  g + Math.abs(this.i - goal.getI()) + Math.abs(this.j - goal.getJ());
     }
 
     public double getG() {
@@ -82,5 +81,13 @@ public class Node {
 
     public void setNodeColour(Color nodeColour) {
         NodeColour = nodeColour;
+    }
+
+    public int getI() {
+        return i;
+    }
+
+    public int getJ() {
+        return j;
     }
 }
