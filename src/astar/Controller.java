@@ -1,7 +1,5 @@
 package astar;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -9,11 +7,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-import static java.lang.Thread.sleep;
 
 public class Controller {
 
@@ -48,10 +44,15 @@ public class Controller {
         setNeighbours();
 
         startNode = grid[0][0];
-        goalNode = grid[rows-1][cols-1];
+        goalNode = grid[10][cols-1];
 
         runBtn.setOnAction(e -> {
-            aStar(startNode, goalNode);
+            new Thread(new Runnable(){
+                public void run(){
+                    aStar(startNode, goalNode);
+                }
+            }).start();
+
         });
         //drawPath(grid[20][25], grid[44][30]);
     }
@@ -137,7 +138,7 @@ public class Controller {
                 if(!closedSet.contains(neighbour)){
                     if(!openSet.contains(neighbour)){
                         openSet.add(neighbour);
-                        neighbour.setNodeColour(Color.RED);
+                        neighbour.setNodeColour(Color.ORANGE);
                     }
 
                     double temp_score = current.getG() + 1;
@@ -147,7 +148,12 @@ public class Controller {
                     }
                 }
             }
-            
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Platform.runLater(() -> {
                 drawNodes();
             });
