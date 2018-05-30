@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Controller {
@@ -40,16 +41,18 @@ public class Controller {
 
         draw();
         createNodes();
-        addObstacles();
-        drawNodes();
         setNeighbours();
 
         startNode = grid[0][0];
         goalNode = grid[rows-1][cols-1];
 
+        addObstacles();
+        drawNodes();
+
         runBtn.setOnAction(e -> {
             new Thread(new Runnable(){
                 public void run(){
+                    reset();
                     aStar(startNode, goalNode);
                 }
             }).start();
@@ -75,15 +78,17 @@ public class Controller {
 
     public void addObstacles(){
 
-        for(int i = 22; i< 30; i++){
-            grid[i][20].setNodeColour(Color.BLACK);
-            grid[i][20].setObstacle(true);
+        for(int i = 0; i < 700; i++){
+            Random r = new Random();
+            int x = r.nextInt(45);
+            int y = r.nextInt(45);
+
+            grid[x][y].setNodeColour(Color.BLACK);
+            grid[x][y].setObstacle(true);
         }
 
-        for(int j = 0; j< 30; j++){
-            grid[20][j].setNodeColour(Color.BLACK);
-            grid[20][j].setObstacle(true);
-        }
+        startNode.setObstacle(false);
+        goalNode.setObstacle(false);
     }
 
     // Draw Node Grid.
@@ -192,6 +197,18 @@ public class Controller {
             });
         }
         System.out.println("Failure");
+    }
+
+
+    public void reset(){
+        for(int i=0; i<rows; i+=1){
+            for(int j=0; j<cols; j+=1){
+                if(!grid[i][j].isObstacle()){
+                    grid[i][j].setNodeColour(Color.WHITE);
+                }
+            }
+        }
+        drawNodes();
     }
 
 }
