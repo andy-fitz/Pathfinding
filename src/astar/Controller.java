@@ -115,8 +115,8 @@ public class Controller {
     // Draw a line between two Nodes.
     public void drawPath(Node node1, Node node2){
         GraphicsContext g = canvas.getGraphicsContext2D();
-        g.setFill(Color.ORANGE);
-        g.setStroke(Color.ORANGE);
+        g.setFill(Color.BLUE);
+        g.setStroke(Color.BLUE);
         g.setLineWidth(5);
         g.strokeLine(node1.getX(),node1.getY(),node2.getX(),node2.getY());
     }
@@ -143,7 +143,7 @@ public class Controller {
                 }
             }
             current = openSet.get(lowest);
-            System.out.println(current.getG());
+            System.out.println(current.getF());
 
             if(current.equals(goal)){
                 System.out.println("done");
@@ -152,9 +152,15 @@ public class Controller {
                 Node temp = current;
                 while(temp.getCameFrom() != null){
                     currentPath.add(temp.getCameFrom());
+                    Node finalTemp = temp;
+                    Platform.runLater(() -> {
+                        drawPath(finalTemp, finalTemp.getCameFrom());
+                    });
                     temp.setNodeColour(Color.BLUE);
                     temp = temp.getCameFrom();
                 }
+                startNode.setNodeColour(Color.BLUE);
+
                 Platform.runLater(() -> {
                     drawNodes();
                 });
@@ -208,7 +214,7 @@ public class Controller {
                 }
             }
         }
-        drawNodes();
+        Platform.runLater(() -> drawNodes());
     }
 
 }
