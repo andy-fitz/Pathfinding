@@ -16,6 +16,8 @@ public class Node {
     private double f;
     private double g = Double.POSITIVE_INFINITY;
 
+    private boolean isObstacle = false;
+
     private Node cameFrom = null;
 
     private Color NodeColour = Color.WHITE;
@@ -99,5 +101,13 @@ public class Node {
 
     public void setCameFrom(Node cameFrom) {
         this.cameFrom = cameFrom;
+    }
+
+    public boolean isObstacle() {
+        return isObstacle;
+    }
+
+    public void setObstacle(boolean obstacle) {
+        isObstacle = obstacle;
     }
 }

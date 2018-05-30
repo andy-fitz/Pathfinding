@@ -40,11 +40,12 @@ public class Controller {
 
         draw();
         createNodes();
+        addObstacles();
         drawNodes();
         setNeighbours();
 
         startNode = grid[0][0];
-        goalNode = grid[10][cols-1];
+        goalNode = grid[rows-1][cols-1];
 
         runBtn.setOnAction(e -> {
             new Thread(new Runnable(){
@@ -69,6 +70,19 @@ public class Controller {
             for (int j = 0; j < height; j += 20) {
                 grid[i/20][j/20] = new Node(i+10,j+10, i/20, j/20);
             }
+        }
+    }
+
+    public void addObstacles(){
+
+        for(int i = 22; i< 30; i++){
+            grid[i][20].setNodeColour(Color.BLACK);
+            grid[i][20].setObstacle(true);
+        }
+
+        for(int j = 0; j< 30; j++){
+            grid[20][j].setNodeColour(Color.BLACK);
+            grid[20][j].setObstacle(true);
         }
     }
 
@@ -150,25 +164,26 @@ public class Controller {
             ArrayList<Node> neighbours = current.getNeighbours();
 
             for(Node neighbour : neighbours){
-                if(!closedSet.contains(neighbour)){
-                    if(!openSet.contains(neighbour)){
-                        openSet.add(neighbour);
-                        neighbour.setNodeColour(Color.ORANGE);
-                    }
+                if(!neighbour.isObstacle()){
+                    if(!closedSet.contains(neighbour)){
+                        if(!openSet.contains(neighbour)){
+                            openSet.add(neighbour);
+                            neighbour.setNodeColour(Color.ORANGE);
+                        }
 
-                    double temp_score = current.getG() + 1;
+                        double temp_score = current.getG() + 1;
 
-                    if (temp_score < neighbour.getG()){
-                        neighbour.setCameFrom(current);
-                        neighbour.setG(temp_score);
-                        neighbour.calculateF(goal);
+                        if (temp_score < neighbour.getG()){
+                            neighbour.setCameFrom(current);
+                            neighbour.setG(temp_score);
+                            neighbour.calculateF(goal);
+                        }
                     }
                 }
             }
 
-
             try {
-                Thread.sleep(10);
+                Thread.sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
