@@ -28,6 +28,8 @@ public class Controller {
     Pane environment;
     Canvas canvas = new Canvas();
     Button runBtn = new Button();
+    Button genObstBtn = new Button();
+
 
     public void initialize(){
         canvas.setWidth(width);
@@ -38,6 +40,11 @@ public class Controller {
         runBtn.setLayoutY(900);
         runBtn.layoutXProperty().bind(environment.widthProperty().divide(2).subtract(runBtn.widthProperty().divide(2)));
         environment.getChildren().add(runBtn);
+
+        genObstBtn.setText("Generate Obstacles");
+        genObstBtn.setLayoutY(900);
+        genObstBtn.layoutXProperty().bind(environment.widthProperty().divide(2).add(runBtn.widthProperty().divide(2)));
+        environment.getChildren().add(genObstBtn);
 
         draw();
         createNodes();
@@ -58,13 +65,30 @@ public class Controller {
             }).start();
 
         });
-        //drawPath(grid[20][25], grid[44][30]);
+
+        genObstBtn.setOnAction(e -> {
+
+                    canvas.getGraphicsContext2D().clearRect(0,0,900,900);
+                    draw();
+                    createNodes();
+                    setNeighbours();
+
+                    startNode = grid[0][0];
+                    goalNode = grid[rows-1][cols-1];
+                    startNode.setNodeColour(Color.web("#ff00ff"));
+                    goalNode.setNodeColour(Color.web("#ff00ff"));
+
+                    addObstacles();
+                    drawNodes();
+        });
+
+
     }
 
     // Draw Background.
     public void draw(){
         GraphicsContext g = canvas.getGraphicsContext2D();
-        g.setFill(Color.GREEN);
+        g.setFill(Color.web("#5cd65c"));
         g.fillRect(0,0,width,height);
     }
 
@@ -78,7 +102,7 @@ public class Controller {
 
     public void addObstacles(){
 
-        for(int i = 0; i < 700; i++){
+        for(int i = 0; i < 900; i++){
             Random r = new Random();
             int x = r.nextInt(45);
             int y = r.nextInt(45);
@@ -94,7 +118,6 @@ public class Controller {
     // Draw Node Grid.
     public void drawNodes(){
         GraphicsContext g = canvas.getGraphicsContext2D();
-        g.setFill(Color.WHITE);
 
         for(int i=0; i<width; i+=20){
             for(int j=0; j<height; j+=20){
@@ -216,5 +239,4 @@ public class Controller {
         }
         Platform.runLater(() -> drawNodes());
     }
-
 }
